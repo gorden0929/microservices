@@ -8,13 +8,13 @@ Node.js 16
 
 install [gcloud cli](https://cloud.google.com/sdk/docs/install) or download directly [windows installer](https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe)
 
-## switching gcloud project
+## Switching gcloud project
 
 ```cmd
 gcloud config set project <PROJECT_NAME>
 ```
 
-## run locally
+## Run locally
 
 ```cmd
 npm run dev
@@ -23,5 +23,5 @@ npm run dev
 ## How to Deploy to Cloud Run
 
 ```cmd
-gcloud run deploy --source .
+npm run deploy:testing-microservice
 ```
