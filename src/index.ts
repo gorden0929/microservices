@@ -3,7 +3,10 @@ import express from 'express';
 import cors from 'cors';
 import { authenticate } from './middlewares/authenticate';
 import { v1 } from './v1';
+import { initializeApp } from 'firebase-admin';
 // import { v2 } from './v2';
+
+initializeApp();
 
 const app = express();
 
