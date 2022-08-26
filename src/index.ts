@@ -1,9 +1,16 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import * as admin from 'firebase-admin';
 import { authenticate } from './middlewares/authenticate';
 import { v1 } from './v1';
 // import { v2 } from './v2';
+
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT!);
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 const app = express();
 
