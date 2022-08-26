@@ -33,36 +33,37 @@ export const authenticate = () => async (req: Request, res: Response, next: Next
 
   let decodedToken;
 
+  const jwtPayload = jwt.verify(idToken, publicKeyList[0].passphrase, { algorithms: ['RS256'] }) as jwt.JwtPayload;
   for (const publicKey of publicKeyList) {
-    const jwtPayload = jwt.verify(idToken, publicKey.passphrase) as jwt.JwtPayload;
-    if (jwtPayload && jwtPayload.exp && jwtPayload.iat && jwtPayload.aud && jwtPayload.iss && jwtPayload.sub) {
-      try {
-        // exp must be future time
-        if (jwtPayload.exp < Date.now() / 1000) {
-          throw new Error('Token expired');
-        }
-        // iat must past time
-        if (jwtPayload.iat > Date.now() / 1000) {
-          throw new Error('Token not yet valid');
-        }
-        // aud must be project id
-        if (jwtPayload.aud !== projectId) {
-          throw new Error('Token not for this project');
-        }
-        // iss must be https://securetoken.google.com/<projectId>
-        if (jwtPayload.iss !== `https://securetoken.google.com/${projectId}`) {
-          throw new Error('Token not for this project');
-        }
-        if (!jwtPayload.sub) {
-          throw new Error('uuid is not found');
-        }
-        const user = await admin.auth().getUser(jwtPayload.sub);
-        decodedToken = jwtPayload;
-      } catch (error) {
-        console.error(error);
-      }
-      break;
-    }
+    console.log(publicKey.passphrase);
+    // if (jwtPayload && jwtPayload.exp && jwtPayload.iat && jwtPayload.aud && jwtPayload.iss && jwtPayload.sub) {
+    //   try {
+    //     // exp must be future time
+    //     if (jwtPayload.exp < Date.now() / 1000) {
+    //       throw new Error('Token expired');
+    //     }
+    //     // iat must past time
+    //     if (jwtPayload.iat > Date.now() / 1000) {
+    //       throw new Error('Token not yet valid');
+    //     }
+    //     // aud must be project id
+    //     if (jwtPayload.aud !== projectId) {
+    //       throw new Error('Token not for this project');
+    //     }
+    //     // iss must be https://securetoken.google.com/<projectId>
+    //     if (jwtPayload.iss !== `https://securetoken.google.com/${projectId}`) {
+    //       throw new Error('Token not for this project');
+    //     }
+    //     if (!jwtPayload.sub) {
+    //       throw new Error('uuid is not found');
+    //     }
+    //     const user = await admin.auth().getUser(jwtPayload.sub);
+    //     decodedToken = jwtPayload;
+    //     break;
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
   }
 
   if (!decodedToken) {
